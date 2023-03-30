@@ -17,7 +17,7 @@ class OrderItems extends StatelessWidget {
               '\$${order.amount} ',
             ),
             subtitle: Text(
-              DateFormat('dd MM yyyy hh:mm').format(
+              DateFormat('dd/MM/yyyy hh:mm').format(
                 order.dateTime,
               ),
             ),
