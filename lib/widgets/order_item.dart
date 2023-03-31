@@ -37,6 +37,7 @@ class _OrderItemState extends State<OrderItem> {
               },
             ),
           ),
+          // ignore: sdk_version_ui_as_code
           if (_expanded)
             Container(
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
