@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/providers/product.dart';
 import 'package:http/http.dart' as http;
+
+import './product.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [
@@ -39,50 +40,46 @@ class Products with ChangeNotifier {
           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     ),
   ];
+  // var _showFavoritesOnly = false;
 
-  // var _showFavouritesOnly = false;
+  List<Product> get items {
+    // if (_showFavoritesOnly) {
+    //   return _items.where((prodItem) => prodItem.isFavorite).toList();
+    // }
+    return [..._items];
+  }
 
-  // void showFavouritesOnly() {
-  //   _showFavouritesOnly = true;
+  List<Product> get favoriteItems {
+    return _items.where((prodItem) => prodItem.isFavorite).toList();
+  }
+
+  Product findById(String id) {
+    return _items.firstWhere((prod) => prod.id == id);
+  }
+
+  // void showFavoritesOnly() {
+  //   _showFavoritesOnly = true;
   //   notifyListeners();
   // }
 
   // void showAll() {
-  //   _showFavouritesOnly = false;
+  //   _showFavoritesOnly = false;
   //   notifyListeners();
   // }
 
-  List<Product> get favouriteItems {
-    return _items.where((item) => item.isFavorite).toList();
-  }
-
-  List<Product> get items {
-    return [..._items];
-  }
-
-  Product findById(String id) {
-    return _items.firstWhere(
-      (prod) => prod.id == id,
-    );
-  }
-
-  Future<void> addProduct(Product product) {
-    const url =
-        'https://shopflutter-43fb5-default-rtdb.firebaseio.com/products.json';
-    return http
-        .post(
-      url,
-      body: json.encode(
-        {
+  Future<void> addProduct(Product product) async {
+    const url = 'https://flutter-update.firebaseio.com/products';
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({
           'title': product.title,
           'description': product.description,
-          'price': product.price,
           'imageUrl': product.imageUrl,
-          'isFavourite': product.isFavorite,
-        },
-      ),
-    )
-        .then((response) {
+          'price': product.price,
+          'isFavorite': product.isFavorite,
+        }),
+      );
       final newProduct = Product(
         title: product.title,
         description: product.description,
@@ -90,10 +87,13 @@ class Products with ChangeNotifier {
         imageUrl: product.imageUrl,
         id: json.decode(response.body)['name'],
       );
-
       _items.add(newProduct);
+      // _items.insert(0, newProduct); // at the start of the list
       notifyListeners();
-    });
+    } catch (error) {
+      // print(error);
+      throw error;
+    }
   }
 
   void updateProduct(String id, Product newProduct) {
@@ -101,6 +101,8 @@ class Products with ChangeNotifier {
     if (prodIndex >= 0) {
       _items[prodIndex] = newProduct;
       notifyListeners();
+    } else {
+      print('...');
     }
   }
 
