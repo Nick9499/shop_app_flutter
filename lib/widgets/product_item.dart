@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/providers/cart.dart';
+import 'package:flutter_complete_guide/providers/product.dart';
 import 'package:flutter_complete_guide/screens/product_details_screen.dart';
 import 'package:provider/provider.dart';
-import '../providers/product.dart';
-import '../providers/cart.dart';
 
 class ProductItem extends StatelessWidget {
   // final String id;

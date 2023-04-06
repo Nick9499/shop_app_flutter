@@ -50,7 +50,7 @@ class Products with ChangeNotifier {
             description: prodData['description'],
             imageUrl: prodData['imageUrl'],
             price: prodData['price'],
-            isFavorite: prodData['isFavourite'],
+            isFavorite: prodData['isFavorite'],
           ),
         );
         _items = loadedProduct;
@@ -116,7 +116,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url =
-        'https://shopflutter-43fb5-default-rtdb.firebaseio.com/products/$id';
+        'https://shopflutter-43fb5-default-rtdb.firebaseio.com/products/$id.json';
     final exisitngProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[exisitngProductIndex];
 
