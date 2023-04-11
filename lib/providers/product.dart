@@ -25,12 +25,12 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleFavoriteStatus() async {
+  void toggleFavoriteStatus(String token) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
     final url =
-        await 'https://shopflutter-43fb5-default-rtdb.firebaseio.com/products/$id.json';
+        await 'https://shopflutter-43fb5-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
     try {
       final response = await http.patch(
         url,
